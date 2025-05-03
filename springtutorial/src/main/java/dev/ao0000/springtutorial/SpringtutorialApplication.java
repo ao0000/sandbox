@@ -6,7 +6,7 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.Arrays;
+import javax.swing.*;
 
 @SpringBootApplication
 public class SpringtutorialApplication implements ApplicationRunner {
@@ -15,16 +15,16 @@ public class SpringtutorialApplication implements ApplicationRunner {
     public static void main(String[] args) {
         SpringApplication springApplication = new SpringApplication(SpringtutorialApplication.class);
         springApplication.setBannerMode(Banner.Mode.OFF);
+        springApplication.setHeadless(false);
         springApplication.run(args);
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        System.out.println("---------------------------------------");
-        System.out.println("| This is Application Runner program. |");
-        System.out.println("---------------------------------------");
-        System.out.println(args.getOptionNames());
-        System.out.println(args.getNonOptionArgs());
-        System.out.println(Arrays.asList(args.getSourceArgs()));
+        JFrame frame = new JFrame("Spring Boot Swing App");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(300, 200);
+        frame.add(new JLabel("Spring Boot Application."));
+        frame.setVisible(true);
     }
 }
