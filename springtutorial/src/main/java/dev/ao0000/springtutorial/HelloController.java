@@ -84,20 +84,31 @@ public class HelloController {
 //        model.setViewName("index");
 //        return model;
 //    }
+//    @GetMapping("/")
+//    public ModelAndView index(ModelAndView modelAndView) {
+//        modelAndView.setViewName("index");
+//        modelAndView.addObject("msg", "HelloController/indexのページです。");
+//        return modelAndView;
+//    }
+//
+//    @GetMapping("/other")
+//    public String other() {
+//        return "redirect:/";
+//    }
+//
+//    @GetMapping("/home")
+//    public String home() {
+//        return "forward:/";
+//    }
+
+    private boolean flag = false;
+
     @GetMapping("/")
     public ModelAndView index(ModelAndView modelAndView) {
+        flag = !flag;
         modelAndView.setViewName("index");
-        modelAndView.addObject("msg", "HelloController/indexのページです。");
+        modelAndView.addObject("flag", flag);
+        modelAndView.addObject("msg", "サンプルのメッセージです。");
         return modelAndView;
-    }
-
-    @GetMapping("/other")
-    public String other() {
-        return "redirect:/";
-    }
-
-    @GetMapping("/home")
-    public String home() {
-        return "forward:/";
     }
 }
