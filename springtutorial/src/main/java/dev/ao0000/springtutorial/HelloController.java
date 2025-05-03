@@ -2,6 +2,7 @@ package dev.ao0000.springtutorial;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -112,12 +113,20 @@ public class HelloController {
 //        return modelAndView;
 //    }
 
-    @GetMapping("/")
-    public ModelAndView index(ModelAndView mav) {
+//    @GetMapping("/")
+//    public ModelAndView index(ModelAndView mav) {
+//        mav.setViewName("index");
+//        mav.addObject("msg", "データを表示します。");
+//        String[] data = new String[]{"One", "Two", "Three"};
+//        mav.addObject("data", data);
+//        return mav;
+//    }
+
+    @GetMapping("/{month}")
+    public ModelAndView index(@PathVariable int month, ModelAndView mav) {
         mav.setViewName("index");
-        mav.addObject("msg", "データを表示します。");
-        String[] data = new String[]{"One", "Two", "Three"};
-        mav.addObject("data", data);
+        mav.addObject("msg", month + "月は？");
+        mav.addObject("month", month);
         return mav;
     }
 }
