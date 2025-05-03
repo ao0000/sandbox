@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@RestController
-public class SpringtutorialApplication {
+public class SpringtutorialApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication springApplication = new SpringApplication(SpringtutorialApplication.class);
@@ -17,8 +16,12 @@ public class SpringtutorialApplication {
 		springApplication.run(args);
 	}
 
-	@RequestMapping("/")
-	public String index() {
-		return "Hello, Spring Boot3!!!";
+	@Override
+	public void run(String... args) throws Exception {
+		System.out.println("---------------------------------------");
+		System.out.println("| This is CommnadLine Runner program. |");
+		System.out.println("---------------------------------------");
+		System.out.println("["+String.join(", ", args)+"]");
+		System.out.println();
 	}
 }
