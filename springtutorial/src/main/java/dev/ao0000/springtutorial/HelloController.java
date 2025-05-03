@@ -101,14 +101,23 @@ public class HelloController {
 //        return "forward:/";
 //    }
 
-    private boolean flag = false;
+//    private boolean flag = false;
+//
+//    @GetMapping("/")
+//    public ModelAndView index(ModelAndView modelAndView) {
+//        flag = !flag;
+//        modelAndView.setViewName("index");
+//        modelAndView.addObject("flag", flag);
+//        modelAndView.addObject("msg", "サンプルのメッセージです。");
+//        return modelAndView;
+//    }
 
     @GetMapping("/")
-    public ModelAndView index(ModelAndView modelAndView) {
-        flag = !flag;
-        modelAndView.setViewName("index");
-        modelAndView.addObject("flag", flag);
-        modelAndView.addObject("msg", "サンプルのメッセージです。");
-        return modelAndView;
+    public ModelAndView index(ModelAndView mav) {
+        mav.setViewName("index");
+        mav.addObject("msg", "データを表示します。");
+        String[] data = new String[]{"One", "Two", "Three"};
+        mav.addObject("data", data);
+        return mav;
     }
 }
