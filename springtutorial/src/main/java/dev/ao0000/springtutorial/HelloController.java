@@ -1,8 +1,16 @@
 package dev.ao0000.springtutorial;
 
+import dev.ao0000.springtutorial.model.Person;
+import dev.ao0000.springtutorial.repository.PersonRepository;
+import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class HelloController {
@@ -149,14 +157,104 @@ public class HelloController {
 //        return mav;
 //    }
 
-    private boolean flag = false;
+//    private boolean flag = false;
+//
+//    @RequestMapping("/")
+//    public ModelAndView index(ModelAndView mav) {
+//        mav.setViewName("index");
+//        flag = !flag;
+//        mav.addObject("flag", flag);
+//        mav.addObject("msg", "メッセージを表示します。");
+//        return mav;
+//    }
 
-    @RequestMapping("/")
-    public ModelAndView index(ModelAndView mav) {
+//    @Autowired
+//    PersonRepository personRepository;
+//
+//    @GetMapping("/")
+//    public ModelAndView index(ModelAndView mav) {
+//        mav.setViewName("index");
+//        mav.addObject("title", "Hello page");
+//        mav.addObject("msg", "this is JPA sample data.");
+//        Iterable<Person> list = personRepository.findAll();
+//        mav.addObject("data", list);
+//        return mav;
+//    }
+
+    @Autowired
+    PersonRepository repository;
+
+    @GetMapping("/")
+    public ModelAndView index(
+            @ModelAttribute("formModel") Person person,
+            ModelAndView mav
+    ) {
         mav.setViewName("index");
-        flag = !flag;
-        mav.addObject("flag", flag);
-        mav.addObject("msg", "メッセージを表示します。");
+        mav.addObject("title", "Hello page");
+        mav.addObject("msg", "this is JPA sample data.");
+        List<Person> list = repository.findAll();
+        mav.addObject("data", list);
         return mav;
+    }
+
+    @PostMapping("/")
+    @Transactional
+    public ModelAndView form(@ModelAttribute("formModel") Person person, ModelAndView mav) {
+        repository.saveAndFlush(person);
+        return new ModelAndView("redirect:/");
+    }
+
+    @PostConstruct
+    public void init() {
+        Person p1 = new Person();
+        p1.setName("taro");
+        p1.setAge(39);
+        p1.setMail("taro@yamada");
+        repository.saveAndFlush(p1);
+
+        Person p2 = new Person();
+        p2.setName("hanako");
+        p2.setAge(28);
+        p2.setMail("hanako@flower");
+        repository.saveAndFlush(p2);
+
+        Person p3 = new Person();
+        p3.setName("sachiko");
+        p3.setAge(17);
+        p3.setMail("sachiko@happy");
+        repository.saveAndFlush(p3);
+    }
+
+    @GetMapping(value = "/edit/{id}")
+    public ModelAndView edit(@ModelAttribute Person person, @PathVariable("id") int id, ModelAndView mav) {
+        mav.setViewName("edit");
+        mav.addObject("title", "edit Person.");
+        Optional<Person> data = repository.findById((long) id);
+        mav.addObject("formModel", data.get());
+        return mav;
+    }
+
+    @PostMapping("/edit")
+    @Transactional
+    public ModelAndView update(@ModelAttribute Person person, ModelAndView mav) {
+        repository.saveAndFlush(person);
+        return new ModelAndView("redirect:/");
+    }
+
+    @GetMapping("/delete/{id}")
+    public ModelAndView delete(@PathVariable("id") long id, ModelAndView mav) {
+        mav.setViewName("delete");
+        mav.addObject("title", "delete Person.");
+        mav.addObject("msg", "Can I delete this record?");
+        Optional<Person> data = repository.findById((long) id);
+        mav.addObject("formModel", data.get());
+        return mav;
+    }
+
+    @PostMapping("/delete")
+    @Transactional
+    public ModelAndView remove(@RequestParam long id, ModelAndView mav) {
+        repository.deleteById((long) id);
+        return new ModelAndView("redirect:/");
     }
 }

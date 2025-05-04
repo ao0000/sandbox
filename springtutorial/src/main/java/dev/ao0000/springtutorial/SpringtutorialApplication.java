@@ -48,7 +48,7 @@ public class SpringtutorialApplication {
 
 //    @RequestMapping("/{num}")
 //    public DataObject index(@PathVariable int num) {
-//        int n = num < 0 ? 0 : num >= data.length ? 0 : num;
+//        int n = num < 0 ? 0 : num >= data.length ? 0 : num;¡
 //        return data[n];
 //    }
 }
